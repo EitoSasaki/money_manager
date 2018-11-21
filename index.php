@@ -1,23 +1,27 @@
 <?php
 //機能を読み込み
-include 'function.php';
+require 'function.php';
 
 //一覧用データを取得
 $data = get_price($db);
 
 //収支データ表示用の値を作成
 $price_list = get_price_list($data);
+
+//ページタイトルとページ見出し
+$title = 'TOPページ';
+$header = 'Income and Expenditure';
 ?>
 
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>TOPページ</title>
-  </head>	
-  <body>
-    <h1>Income and Expenditure</h1>
-    <!-- 一覧を表示 -->
-    <?= $price_list ?>
+<!-- ヘッダーの読み込み -->
+<?php require 'header.php'; ?>
 
-  </body>
-</html>
+<!-- ここからメイン -->
+
+<!-- 一覧を表示 -->
+<?= $price_list ?>
+
+<!-- ここまでメイン -->
+
+<!-- フッターの読み込み -->
+<?php require 'footer.php'; ?>
