@@ -2,7 +2,7 @@
 
 //収支の一覧取得
 function get_price($db) {
-  $sql = "SELECT * FROM price LEFT JOIN price_meta ON price.ID = price_meta.price_id ORDER BY date DESC";
+  $sql = "SELECT price.ID as ID, date, price, price_id, category, method, comment FROM price LEFT JOIN price_meta ON price.ID = price_meta.price_id ORDER BY date DESC";
 
   $query = $db->prepare($sql);
   $result = $query->execute();
@@ -33,7 +33,7 @@ function get_price_list($data) {
             . '<td>' . get_category($value['category']) . '</td>'
             . '<td>' . $value['comment'] . '</td>'
             . '<td>' . $value['price'] . '</td>'
-            . '<td><a href="#">編集</a>/<a href="#">削除</a></td>'
+            . '<td><a href="edit.php?id=' . $value['ID'] . '">編集</a>/<a href="delete_price.php?id=' . $value['ID'] . '" onClick="confirm(\'本当に削除してもよろしいですか\')">削除</a></td>'
             . '</tr>';
   }
   $list .= '</table>';
