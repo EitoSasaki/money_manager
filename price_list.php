@@ -1,11 +1,13 @@
 <?php
 
 //収支の一覧取得
-function get_price($db, $id = null) {
+function get_price($db, $id = null, $cat = null) {
   $sql = "SELECT price.ID as ID, date, price, price_id, category, method, comment FROM price LEFT JOIN price_meta ON price.ID = price_meta.price_id";
 
   if($id != null){
     $sql .= ' WHERE price.ID = ' . $id;
+  } elseif($cat != null){
+    $sql .= ' WHERE price_meta.category = ' . $cat;
   }
 
   $sql .= ' ORDER BY date DESC';
@@ -70,4 +72,14 @@ function get_category($category) {
     default :
     redirect_500();
   }
+}
+
+//カテゴリー検索用のフォーム作成
+function display_cat_form () {
+  $category = array('食費', '交通費', '旅費');
+  $cat_option = '';
+  foreach ($category as $key => $cat) {
+    $cat_option .= '<option value="' . $key . '">' . $cat . '</option>';
+  }
+  return $cat_option;
 }
