@@ -5,7 +5,8 @@ require_once 'function.php';
 
 //関数群
 function update_price($db, $id, $date, $price) {
-  $sql = "UPDATE `price` SET `date` = " . $date . "', `price` = '" . $price . "' WHERE `price`.`ID` = 2" . $id;
+  $sql = "UPDATE `price` SET `date` = '" . $date . "', `price` = '" . $price . "' WHERE `ID` = " . $id;
+  var_dump($sql);
   $query = $db->prepare($sql);
   $result = $query->execute();
   return $result;
@@ -19,7 +20,7 @@ function update_price_meta($db, $id, $category, $method, $comment) {
 }
 
 if ($_POST['confirm'] == 'edit' && !empty($_POST['confirm'])) {
-//バリデーション
+  //バリデーション
   $id = $_POST['id'];
   $year = $_POST['year'];
   $month = $_POST['month'];
@@ -31,7 +32,7 @@ if ($_POST['confirm'] == 'edit' && !empty($_POST['confirm'])) {
   $comment = $_POST['comment'];
   $price = $_POST['price'];
 
-//収支の追加処理
+  //収支の追加処理
   $date = date('Y-m-d H:i:00', mktime($hour, $minute, 0, $month, $day, $year));
 
   if (!update_price($db, $id, $date, $price)) {
