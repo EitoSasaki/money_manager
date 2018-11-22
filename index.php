@@ -18,6 +18,8 @@ $header = 'Income and Expenditure';
 
 <!-- ここからメイン -->
 
+<a href="add.php">収支追加</a>
+
 <!-- 一覧を表示 -->
 <?= $price_list ?>
 
