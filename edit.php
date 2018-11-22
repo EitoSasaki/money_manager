@@ -1,12 +1,21 @@
 <?php
+require_once('function.php');
+
 //ページタイトルとページ見出し
-$title = '収支追加';
-$header = '収支追加';
+$title = '収支編集';
+$header = '収支編集';
+
+//収支を取得
+if (empty($_GET['id'])) {
+  header('Location: index.php');
+}
+
+$data = get_price($db, $_GET['id']);
 
 date_default_timezone_set('Asia/Tokyo');
 
 $year_option = '';
-$year = date('Y');
+$year = substr($data[0]['date'], 0, 4);
 for($i = 2000; $i <= $year; $i++){
   if($i == $year){
     $year_option .= '<option value="' . $i . '" selected>' . $i . '</option>';
@@ -16,7 +25,7 @@ for($i = 2000; $i <= $year; $i++){
 }
 
 $month_option = '';
-$month = date('m');
+$month = substr($data[0]['date'], 5, 2);
 for($i = 1; $i <= 12; $i++){
   if($i == $month){
     $month_option .= '<option value="' . $i . '" selected>' . $i . '</option>';
@@ -26,7 +35,7 @@ for($i = 1; $i <= 12; $i++){
 }
 
 $day_option = '';
-$day = date('d');
+$day = substr($data[0]['date'], 8, 2);
 for($i = 1; $i <= 31; $i++){
   if($i == $day){
     $day_option .= '<option value="' . $i . '" selected>' . $i . '</option>';
@@ -36,7 +45,7 @@ for($i = 1; $i <= 31; $i++){
 }
 
 $hour_option = '';
-$hour = date('G');
+$hour = substr($data[0]['date'], 11, 2);
 for($i = 0; $i <= 23; $i++){
   if($i == $hour){
     $hour_option .= '<option value="' . $i . '" selected>' . $i . '</option>';
@@ -46,7 +55,7 @@ for($i = 0; $i <= 23; $i++){
 }
 
 $minute_option = '';
-$minute = date('i');
+$minute = substr($data[0]['date'], 14, 2);
 if (substr($minute, 0, 1) == 0) {
   $minute = substr($minute, 1, 1);
 }
@@ -58,11 +67,27 @@ for($i = 0; $i <= 59; $i++){
   }
 }
 
+$income = '';
+$expend = '';
+if ($data[0]['method'] == 0) {
+  $income = 'checked';
+} else {
+  $expend = 'checked';
+}
+
 $category = array('食費', '交通費', '旅費');
 $cat_option = '';
 foreach ($category as $key => $cat) {
-  $cat_option .= '<option value="' . $key . '">' . $cat . '</option>';
+  if ($key == $data[0]['category']) {
+    $cat_option .= '<option value="' . $key . '" selected>' . $cat . '</option>';
+  } else {
+    $cat_option .= '<option value="' . $key . '">' . $cat . '</option>';
+  }
 }
+
+$comment = $data[0]['comment'];
+
+$price = $data[0]['price'];
 
 ?>
 
@@ -70,7 +95,7 @@ foreach ($category as $key => $cat) {
 <?php require 'header.php'; ?>
 
 <!-- ここからメイン -->
-<form method="post" action="add_price.php">
+<form method="post" action="edit_price.php">
 
   <div class="">
     <label>日付</label>
@@ -99,9 +124,9 @@ foreach ($category as $key => $cat) {
   <div class="">
     <label>収支</label>
     <span>収入</span>
-    <input type="radio" name="method" value="0" required>
+    <input type="radio" name="method" value="0" required <?= $income ?>>
     <span>支出</span>
-    <input type="radio" name="method" value="1" required checked>
+    <input type="radio" name="method" value="1" required <?= $expend ?>>
   </div>
 
   <div class="">
@@ -113,17 +138,18 @@ foreach ($category as $key => $cat) {
 
   <div class="">
     <label>コメント</label>
-    <input type="text" name="comment">
+    <input type="text" name="comment" value="<?= $comment ?>">
   </div>
 
   <div class="">
     <label>金額</label>
-    <input type="text" name="price" required>
+    <input type="text" name="price" required  value="<?= $price ?>"">
   </div>
 
   <div class="">
-    <input type="hidden" name="confirm" value="add">
-    <input type="submit" name="submit" value="登録">
+    <input type="hidden" name="id" value="<?= $data[0]['ID'] ?>">
+    <input type="hidden" name="confirm" value="edit">
+    <input type="submit" name="submit" value="編集">
   </div>
 
 </form>
