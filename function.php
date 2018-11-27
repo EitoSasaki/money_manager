@@ -17,3 +17,8 @@ function redirect_500() {
   header('HTTP', true, 500);
   exit();
 }
+
+function get_categories(){
+  $categories = array('食費', '交通費', '旅費', '学費');
+  return $categories;
+}
