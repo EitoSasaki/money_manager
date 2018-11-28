@@ -16,7 +16,6 @@ $price_list = get_price_list($data);
 //ページタイトルとページ見出し
 $title = 'TOPページ';
 $header = 'Income and Expenditure';
-
 ?>
 
 <!-- ヘッダーの読み込み -->
@@ -26,17 +25,17 @@ $header = 'Income and Expenditure';
 
 <!-- 一覧を表示 -->
 <div>
-<form method="get" action="index.php">
-  <select name="category" required>
-    <?= display_cat_form() ?>
-  </select>
-  <input type="submit" value="検索">
-</form>
+  <form method="get" action="index.php">
+    <select name="category" required>
+      <?= display_cat_form() ?>
+    </select>
+    <input type="submit" value="検索">
+  </form>
 </div>
 
 <?= $price_list ?>
 
-<div id="container"></div>
+<div id="container" style="display: inline-block;"></div>
 <script src="data.js"></script>
 
 <!-- ここまでメイン -->
